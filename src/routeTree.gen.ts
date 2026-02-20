@@ -15,10 +15,12 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
 import { Route as AuthenticatedCalendarRouteImport } from './routes/_authenticated/calendar'
+import { Route as AuthenticatedQaIndexRouteImport } from './routes/_authenticated/qa/index'
 import { Route as AuthenticatedNurseIndexRouteImport } from './routes/_authenticated/nurse/index'
 import { Route as AuthenticatedInvoiceIndexRouteImport } from './routes/_authenticated/invoice/index'
 import { Route as AuthenticatedHospiceIndexRouteImport } from './routes/_authenticated/hospice/index'
 import { Route as AuthenticatedEmployeeIndexRouteImport } from './routes/_authenticated/employee/index'
+import { Route as AuthenticatedQaAssignmentIdRouteImport } from './routes/_authenticated/qa/$assignmentId'
 import { Route as AuthenticatedNurseNurseIdRouteImport } from './routes/_authenticated/nurse/$nurseId'
 import { Route as AuthenticatedInvoiceInvoiceIdRouteImport } from './routes/_authenticated/invoice/$invoiceId'
 import { Route as AuthenticatedHospiceHospiceIdRouteImport } from './routes/_authenticated/hospice/$hospiceId'
@@ -53,6 +55,11 @@ const AuthenticatedCalendarRoute = AuthenticatedCalendarRouteImport.update({
   path: '/calendar',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedQaIndexRoute = AuthenticatedQaIndexRouteImport.update({
+  id: '/qa/',
+  path: '/qa/',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedNurseIndexRoute = AuthenticatedNurseIndexRouteImport.update({
   id: '/nurse/',
   path: '/nurse/',
@@ -74,6 +81,12 @@ const AuthenticatedEmployeeIndexRoute =
   AuthenticatedEmployeeIndexRouteImport.update({
     id: '/employee/',
     path: '/employee/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedQaAssignmentIdRoute =
+  AuthenticatedQaAssignmentIdRouteImport.update({
+    id: '/qa/$assignmentId',
+    path: '/qa/$assignmentId',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 const AuthenticatedNurseNurseIdRoute =
@@ -111,10 +124,12 @@ export interface FileRoutesByFullPath {
   '/hospice/$hospiceId': typeof AuthenticatedHospiceHospiceIdRoute
   '/invoice/$invoiceId': typeof AuthenticatedInvoiceInvoiceIdRoute
   '/nurse/$nurseId': typeof AuthenticatedNurseNurseIdRoute
+  '/qa/$assignmentId': typeof AuthenticatedQaAssignmentIdRoute
   '/employee/': typeof AuthenticatedEmployeeIndexRoute
   '/hospice/': typeof AuthenticatedHospiceIndexRoute
   '/invoice/': typeof AuthenticatedInvoiceIndexRoute
   '/nurse/': typeof AuthenticatedNurseIndexRoute
+  '/qa/': typeof AuthenticatedQaIndexRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
@@ -126,10 +141,12 @@ export interface FileRoutesByTo {
   '/hospice/$hospiceId': typeof AuthenticatedHospiceHospiceIdRoute
   '/invoice/$invoiceId': typeof AuthenticatedInvoiceInvoiceIdRoute
   '/nurse/$nurseId': typeof AuthenticatedNurseNurseIdRoute
+  '/qa/$assignmentId': typeof AuthenticatedQaAssignmentIdRoute
   '/employee': typeof AuthenticatedEmployeeIndexRoute
   '/hospice': typeof AuthenticatedHospiceIndexRoute
   '/invoice': typeof AuthenticatedInvoiceIndexRoute
   '/nurse': typeof AuthenticatedNurseIndexRoute
+  '/qa': typeof AuthenticatedQaIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -143,10 +160,12 @@ export interface FileRoutesById {
   '/_authenticated/hospice/$hospiceId': typeof AuthenticatedHospiceHospiceIdRoute
   '/_authenticated/invoice/$invoiceId': typeof AuthenticatedInvoiceInvoiceIdRoute
   '/_authenticated/nurse/$nurseId': typeof AuthenticatedNurseNurseIdRoute
+  '/_authenticated/qa/$assignmentId': typeof AuthenticatedQaAssignmentIdRoute
   '/_authenticated/employee/': typeof AuthenticatedEmployeeIndexRoute
   '/_authenticated/hospice/': typeof AuthenticatedHospiceIndexRoute
   '/_authenticated/invoice/': typeof AuthenticatedInvoiceIndexRoute
   '/_authenticated/nurse/': typeof AuthenticatedNurseIndexRoute
+  '/_authenticated/qa/': typeof AuthenticatedQaIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -160,10 +179,12 @@ export interface FileRouteTypes {
     | '/hospice/$hospiceId'
     | '/invoice/$invoiceId'
     | '/nurse/$nurseId'
+    | '/qa/$assignmentId'
     | '/employee/'
     | '/hospice/'
     | '/invoice/'
     | '/nurse/'
+    | '/qa/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
@@ -175,10 +196,12 @@ export interface FileRouteTypes {
     | '/hospice/$hospiceId'
     | '/invoice/$invoiceId'
     | '/nurse/$nurseId'
+    | '/qa/$assignmentId'
     | '/employee'
     | '/hospice'
     | '/invoice'
     | '/nurse'
+    | '/qa'
   id:
     | '__root__'
     | '/_authenticated'
@@ -191,10 +214,12 @@ export interface FileRouteTypes {
     | '/_authenticated/hospice/$hospiceId'
     | '/_authenticated/invoice/$invoiceId'
     | '/_authenticated/nurse/$nurseId'
+    | '/_authenticated/qa/$assignmentId'
     | '/_authenticated/employee/'
     | '/_authenticated/hospice/'
     | '/_authenticated/invoice/'
     | '/_authenticated/nurse/'
+    | '/_authenticated/qa/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -248,6 +273,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCalendarRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/qa/': {
+      id: '/_authenticated/qa/'
+      path: '/qa'
+      fullPath: '/qa/'
+      preLoaderRoute: typeof AuthenticatedQaIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/nurse/': {
       id: '/_authenticated/nurse/'
       path: '/nurse'
@@ -274,6 +306,13 @@ declare module '@tanstack/react-router' {
       path: '/employee'
       fullPath: '/employee/'
       preLoaderRoute: typeof AuthenticatedEmployeeIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/qa/$assignmentId': {
+      id: '/_authenticated/qa/$assignmentId'
+      path: '/qa/$assignmentId'
+      fullPath: '/qa/$assignmentId'
+      preLoaderRoute: typeof AuthenticatedQaAssignmentIdRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/nurse/$nurseId': {
@@ -314,10 +353,12 @@ interface AuthenticatedRouteChildren {
   AuthenticatedHospiceHospiceIdRoute: typeof AuthenticatedHospiceHospiceIdRoute
   AuthenticatedInvoiceInvoiceIdRoute: typeof AuthenticatedInvoiceInvoiceIdRoute
   AuthenticatedNurseNurseIdRoute: typeof AuthenticatedNurseNurseIdRoute
+  AuthenticatedQaAssignmentIdRoute: typeof AuthenticatedQaAssignmentIdRoute
   AuthenticatedEmployeeIndexRoute: typeof AuthenticatedEmployeeIndexRoute
   AuthenticatedHospiceIndexRoute: typeof AuthenticatedHospiceIndexRoute
   AuthenticatedInvoiceIndexRoute: typeof AuthenticatedInvoiceIndexRoute
   AuthenticatedNurseIndexRoute: typeof AuthenticatedNurseIndexRoute
+  AuthenticatedQaIndexRoute: typeof AuthenticatedQaIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
@@ -327,10 +368,12 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedHospiceHospiceIdRoute: AuthenticatedHospiceHospiceIdRoute,
   AuthenticatedInvoiceInvoiceIdRoute: AuthenticatedInvoiceInvoiceIdRoute,
   AuthenticatedNurseNurseIdRoute: AuthenticatedNurseNurseIdRoute,
+  AuthenticatedQaAssignmentIdRoute: AuthenticatedQaAssignmentIdRoute,
   AuthenticatedEmployeeIndexRoute: AuthenticatedEmployeeIndexRoute,
   AuthenticatedHospiceIndexRoute: AuthenticatedHospiceIndexRoute,
   AuthenticatedInvoiceIndexRoute: AuthenticatedInvoiceIndexRoute,
   AuthenticatedNurseIndexRoute: AuthenticatedNurseIndexRoute,
+  AuthenticatedQaIndexRoute: AuthenticatedQaIndexRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(

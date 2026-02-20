@@ -3,6 +3,7 @@ import { useState } from 'react'
 import {
     Users,
     Building2,
+    Settings2
 } from 'lucide-react'
 import { getHospice } from '@/server/hospice/hospice.functions'
 import { getHospicePatients } from '@/server/patient/patient.functions'
@@ -13,11 +14,12 @@ import { HospiceEditDrawer } from '@/components/hospice/hospice-edit-drawer'
 import { HospiceHeader } from '@/components/hospice/hospice-header'
 import { HospiceRegistryTab } from '@/components/hospice/hospice-registry-tab'
 import { HospiceCredentialsTab } from '@/components/hospice/hospice-credentials-tab'
+import { HospiceQAConfigTab } from '@/components/hospice/hospice-qa-config-tab'
 import { DetailWrapper } from '@/components/layout/DetailWrapper'
 import { z } from 'zod'
 
 const hospiceDetailSearchSchema = z.object({
-    tab: z.enum(['registry', 'facility', 'credentials']).catch('registry'),
+    tab: z.enum(['registry', 'facility', 'credentials', 'qa']).catch('registry'),
 })
 
 export const Route = createFileRoute('/_authenticated/hospice/$hospiceId')({
@@ -77,6 +79,12 @@ function HospiceDetailPage() {
                         >
                             <Building2 className="w-3.5 h-3.5" /> Facility Details
                         </TabsTrigger>
+                        <TabsTrigger
+                            value="qa"
+                            className="rounded-sm px-4 text-xs font-bold data-[state=active]:bg-white data-[state=active]:text-slate-900 data-[state=active]:shadow-sm transition-all gap-1.5"
+                        >
+                            <Settings2 className="w-3.5 h-3.5 text-indigo-500" /> QA Configuration
+                        </TabsTrigger>
                     </TabsList>
                 </div>
 
@@ -96,6 +104,10 @@ function HospiceDetailPage() {
                         <Building2 className="w-8 h-8 text-slate-200 mb-2" />
                         <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Administrative Content Coming Soon</p>
                     </div>
+                </TabsContent>
+
+                <TabsContent value="qa" className="mt-0 ring-0 focus-visible:ring-0 outline-none">
+                    <HospiceQAConfigTab hospice={hospice} />
                 </TabsContent>
             </Tabs>
 

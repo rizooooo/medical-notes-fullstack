@@ -75,3 +75,15 @@ export const getAllHospicesFn = createServerFn({ method: 'GET' })
       _id: h._id.toString()
     }))
   })
+
+export const updateHospiceQAConfigFn = createServerFn({ method: 'POST' })
+  .inputValidator(z.object({
+    id: z.string(),
+    enabledColumns: z.array(z.string())
+  }))
+  .handler(async ({ data: input }) => {
+    await updateHospice(input.id, {
+      qaConfig: { enabledColumns: input.enabledColumns }
+    })
+    return { success: true }
+  })

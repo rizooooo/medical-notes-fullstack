@@ -1,4 +1,4 @@
-import { ChevronDown, Building2, Users, Receipt, ShieldUser, LogOut, LayoutDashboard, Settings, User2, ChevronRight, Calendar as CalendarIcon } from 'lucide-react'
+import { ChevronDown, Building2, Users, Receipt, ShieldUser, LogOut, LayoutDashboard, Settings, User2, ChevronRight, Calendar as CalendarIcon, ClipboardCheck } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
 import {
   DropdownMenu,
@@ -114,6 +114,18 @@ export function AppSidebar() {
                   >
                     <Receipt className="size-4" />
                     <span className="text-xs font-bold">Billing Registry</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild tooltip="QA Progress" className="h-9 px-4 transition-all">
+                  <Link
+                    to="/qa"
+                    search={{ search: '' }}
+                    activeProps={{ className: "bg-primary text-primary-foreground" }}
+                  >
+                    <ClipboardCheck className="size-4" />
+                    <span className="text-xs font-bold">QA Progress</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>

@@ -27,7 +27,7 @@ export function TablePageLayout({
   className,
 }: TablePageLayoutProps) {
   return (
-    <div className={cn("flex flex-1 flex-col gap-8 w-full max-w-full h-full min-w-0 p-4 lg:p-10", className)}>
+    <div className={cn("flex flex-1 flex-col gap-8 w-full max-w-full h-full min-w-0 p-4 lg:p-10 overflow-y-auto overflow-x-hidden", className)}>
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
         <div className="space-y-1.5">
