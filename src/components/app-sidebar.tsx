@@ -1,33 +1,19 @@
-import { ChevronDown, Factory, Plane, Plus, User2 } from 'lucide-react'
+import { ChevronDown, Factory, Users, Receipt } from 'lucide-react'
 
 import { Link } from '@tanstack/react-router'
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import {
   Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupAction,
-  SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from '@/components/ui/collapsible'
 
 export function AppSidebar() {
   return (
@@ -54,17 +40,25 @@ export function AppSidebar() {
       <SidebarMenu>
         <SidebarMenuItem>
           <SidebarMenuButton asChild>
-            <a href={'/'}>
-              <Factory />
+            <Link to="/nurse" search={{ page: 1, pageSize: 10 }}>
+              <Users />
               <span>Nurse</span>
-            </a>
+            </Link>
           </SidebarMenuButton>
         </SidebarMenuItem>
         <SidebarMenuItem>
           <SidebarMenuButton asChild>
-            <Link to="/test">
-              <Plane />
-              <span>Test</span>
+            <Link to="/hospice" search={{ page: 1, pageSize: 10 }}>
+              <Factory />
+              <span>Hospice</span>
+            </Link>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+        <SidebarMenuItem>
+          <SidebarMenuButton asChild>
+            <Link to="/invoice" search={{ page: 1, pageSize: 10 }}>
+              <Receipt />
+              <span>Invoices</span>
             </Link>
           </SidebarMenuButton>
         </SidebarMenuItem>

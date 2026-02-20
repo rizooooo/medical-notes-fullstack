@@ -9,55 +9,107 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TestRouteImport } from './routes/test'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as NurseIndexRouteImport } from './routes/nurse/index'
+import { Route as InvoiceIndexRouteImport } from './routes/invoice/index'
+import { Route as HospiceIndexRouteImport } from './routes/hospice/index'
+import { Route as NurseNurseIdRouteImport } from './routes/nurse/$nurseId'
+import { Route as HospiceHospiceIdRouteImport } from './routes/hospice/$hospiceId'
 
-const TestRoute = TestRouteImport.update({
-  id: '/test',
-  path: '/test',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NurseIndexRoute = NurseIndexRouteImport.update({
+  id: '/nurse/',
+  path: '/nurse/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InvoiceIndexRoute = InvoiceIndexRouteImport.update({
+  id: '/invoice/',
+  path: '/invoice/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HospiceIndexRoute = HospiceIndexRouteImport.update({
+  id: '/hospice/',
+  path: '/hospice/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NurseNurseIdRoute = NurseNurseIdRouteImport.update({
+  id: '/nurse/$nurseId',
+  path: '/nurse/$nurseId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HospiceHospiceIdRoute = HospiceHospiceIdRouteImport.update({
+  id: '/hospice/$hospiceId',
+  path: '/hospice/$hospiceId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/test': typeof TestRoute
+  '/hospice/$hospiceId': typeof HospiceHospiceIdRoute
+  '/nurse/$nurseId': typeof NurseNurseIdRoute
+  '/hospice/': typeof HospiceIndexRoute
+  '/invoice/': typeof InvoiceIndexRoute
+  '/nurse/': typeof NurseIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/test': typeof TestRoute
+  '/hospice/$hospiceId': typeof HospiceHospiceIdRoute
+  '/nurse/$nurseId': typeof NurseNurseIdRoute
+  '/hospice': typeof HospiceIndexRoute
+  '/invoice': typeof InvoiceIndexRoute
+  '/nurse': typeof NurseIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/test': typeof TestRoute
+  '/hospice/$hospiceId': typeof HospiceHospiceIdRoute
+  '/nurse/$nurseId': typeof NurseNurseIdRoute
+  '/hospice/': typeof HospiceIndexRoute
+  '/invoice/': typeof InvoiceIndexRoute
+  '/nurse/': typeof NurseIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/test'
+  fullPaths:
+    | '/'
+    | '/hospice/$hospiceId'
+    | '/nurse/$nurseId'
+    | '/hospice/'
+    | '/invoice/'
+    | '/nurse/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/test'
-  id: '__root__' | '/' | '/test'
+  to:
+    | '/'
+    | '/hospice/$hospiceId'
+    | '/nurse/$nurseId'
+    | '/hospice'
+    | '/invoice'
+    | '/nurse'
+  id:
+    | '__root__'
+    | '/'
+    | '/hospice/$hospiceId'
+    | '/nurse/$nurseId'
+    | '/hospice/'
+    | '/invoice/'
+    | '/nurse/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  TestRoute: typeof TestRoute
+  HospiceHospiceIdRoute: typeof HospiceHospiceIdRoute
+  NurseNurseIdRoute: typeof NurseNurseIdRoute
+  HospiceIndexRoute: typeof HospiceIndexRoute
+  InvoiceIndexRoute: typeof InvoiceIndexRoute
+  NurseIndexRoute: typeof NurseIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/test': {
-      id: '/test'
-      path: '/test'
-      fullPath: '/test'
-      preLoaderRoute: typeof TestRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -65,12 +117,51 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/nurse/': {
+      id: '/nurse/'
+      path: '/nurse'
+      fullPath: '/nurse/'
+      preLoaderRoute: typeof NurseIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/invoice/': {
+      id: '/invoice/'
+      path: '/invoice'
+      fullPath: '/invoice/'
+      preLoaderRoute: typeof InvoiceIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hospice/': {
+      id: '/hospice/'
+      path: '/hospice'
+      fullPath: '/hospice/'
+      preLoaderRoute: typeof HospiceIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nurse/$nurseId': {
+      id: '/nurse/$nurseId'
+      path: '/nurse/$nurseId'
+      fullPath: '/nurse/$nurseId'
+      preLoaderRoute: typeof NurseNurseIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hospice/$hospiceId': {
+      id: '/hospice/$hospiceId'
+      path: '/hospice/$hospiceId'
+      fullPath: '/hospice/$hospiceId'
+      preLoaderRoute: typeof HospiceHospiceIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  TestRoute: TestRoute,
+  HospiceHospiceIdRoute: HospiceHospiceIdRoute,
+  NurseNurseIdRoute: NurseNurseIdRoute,
+  HospiceIndexRoute: HospiceIndexRoute,
+  InvoiceIndexRoute: InvoiceIndexRoute,
+  NurseIndexRoute: NurseIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
