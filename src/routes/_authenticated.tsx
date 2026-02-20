@@ -1,6 +1,11 @@
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 import SidebarLayout from '@/layout/sidebarlayout'
-import { getCookie } from '@tanstack/react-start/server'
+import { createServerFn } from '@tanstack/react-start'
+
+const getToken = createServerFn({ method: "GET" }).handler(async () => {
+    const { getCookie } = await import('@tanstack/react-start/server')
+    return getCookie('mn-token')
+})
 
 export const Route = createFileRoute('/_authenticated')({
     beforeLoad: async ({ location }) => {
@@ -10,7 +15,7 @@ export const Route = createFileRoute('/_authenticated')({
             token = localStorage.getItem('mn-token') || undefined
         } else {
             // SSR check
-            token = getCookie('mn-token')
+            token = await getToken()
         }
 
         if (!token) {
