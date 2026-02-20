@@ -6,3 +6,15 @@ export interface IBaseEntity<TId = string> {
   createdAt: Date
   updatedAt: Date
 }
+
+export interface IAuditTrail {
+  timestamp: Date
+  userId: string
+  userName: string
+  action: 'CREATE' | 'UPDATE'
+  changes?: {
+    field: string
+    oldValue: any
+    newValue: any
+  }[]
+}

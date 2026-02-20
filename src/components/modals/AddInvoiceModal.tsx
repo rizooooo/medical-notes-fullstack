@@ -77,20 +77,24 @@ export function AddInvoiceModal({ open, onOpenChange, onSuccess }: AddInvoiceMod
             const selectedHospice = hospiceOptions.find(h => h.value === value.hospiceId)
 
             try {
-                await createInvoiceFn({
-                    data: {
-                        invoiceNumber: `INV-${Date.now()}`,
-                        hospiceId: value.hospiceId,
-                        hospiceName: selectedHospice?.label ?? 'Unknown',
-                        nurseId: value.nurseIds[0],
-                        nurseName: 'Multiple Nurses',
-                        periodStart,
-                        periodEnd,
-                        totalAmount: 0,
-                        status: InvoiceStatus.Draft,
-                        patients: [],
-                    }
-                })
+                // Create separate invoices for each selected nurse
+                await Promise.all(value.nurseIds.map(async (nurseId, index) => {
+                    const selectedNurse = nurseOptions.find(n => n.value === nurseId)
+                    return createInvoiceFn({
+                        data: {
+                            invoiceNumber: `INV-${Date.now()}-${index + 1}`,
+                            hospiceId: value.hospiceId,
+                            hospiceName: selectedHospice?.label ?? 'Unknown',
+                            nurseId: nurseId,
+                            nurseName: selectedNurse?.label ?? 'Unknown Nurse',
+                            periodStart,
+                            periodEnd,
+                            totalAmount: 0,
+                            status: InvoiceStatus.Draft,
+                            patients: [],
+                        }
+                    })
+                }))
 
                 onOpenChange(false)
                 onSuccess?.()

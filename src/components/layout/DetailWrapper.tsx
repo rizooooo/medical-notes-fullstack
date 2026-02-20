@@ -11,7 +11,7 @@ interface DetailWrapperProps {
 export function DetailWrapper({ children, className }: DetailWrapperProps) {
     return (
         <div className={cn(
-            "flex flex-col gap-6 p-4 lg:p-6 max-w-7xl mx-auto w-full min-h-screen bg-slate-50/20",
+            "flex flex-col gap-6 p-4 lg:p-6 max-w-7xl mx-auto w-full min-h-screen bg-background",
             className
         )}>
             {children}

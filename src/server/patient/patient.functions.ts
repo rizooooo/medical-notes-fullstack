@@ -10,8 +10,8 @@ import {
 } from './patient.repo'
 
 export const getHospicePatients = createServerFn({ method: 'GET' })
-    .inputValidator((hospiceId: string) => z.string().parse(hospiceId))
-    .handler(async ({ data: hospiceId }: { data: string }) => {
+    .inputValidator(z.string())
+    .handler(async ({ data: hospiceId }) => {
         const result = await fetchPatientsByHospice(hospiceId)
         return result.map(p => ({
             ...p,
@@ -22,8 +22,8 @@ export const getHospicePatients = createServerFn({ method: 'GET' })
     })
 
 export const getNursePatients = createServerFn({ method: 'GET' })
-    .inputValidator((nurseId: string) => z.string().parse(nurseId))
-    .handler(async ({ data: nurseId }: { data: string }) => {
+    .inputValidator(z.string())
+    .handler(async ({ data: nurseId }) => {
         const result = await fetchPatientsByNurse(nurseId)
         return result.map(p => ({
             ...p,
@@ -34,23 +34,23 @@ export const getNursePatients = createServerFn({ method: 'GET' })
     })
 
 export const createPatientFn = createServerFn({ method: 'POST' })
-    .inputValidator((data: unknown) => PatientSchema.parse(data))
-    .handler(async ({ data }: { data: any }) => {
-        const result = await insertPatient(data)
+    .inputValidator(PatientSchema)
+    .handler(async ({ data: input }) => {
+        const result = await insertPatient(input)
         return { success: true, id: result.insertedId.toString() }
     })
 
 export const updatePatientFn = createServerFn({ method: 'POST' })
-    .inputValidator((data: unknown) => UpdatePatientSchema.parse(data))
-    .handler(async ({ data }: { data: any }) => {
-        const { id, ...rest } = data
+    .inputValidator(UpdatePatientSchema)
+    .handler(async ({ data: input }) => {
+        const { id, ...rest } = input
         await updatePatient(id, rest as any)
         return { success: true }
     })
 
 export const deletePatientFn = createServerFn({ method: 'POST' })
-    .inputValidator((id: string) => z.string().parse(id))
-    .handler(async ({ data: id }: { data: string }) => {
+    .inputValidator(z.string())
+    .handler(async ({ data: id }) => {
         await deletePatient(id)
         return { success: true }
     })

@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { Separator } from '@/components/ui/separator'
+import { cn } from '@/lib/utils'
 
 interface TablePageLayoutProps {
   /** The main title of the page (e.g. "Hospices") */
@@ -16,6 +16,7 @@ interface TablePageLayoutProps {
   children: ReactNode
   /** Pagination controls */
   pagination?: ReactNode
+  className?: string
 }
 
 export function TablePageLayout({
@@ -23,32 +24,31 @@ export function TablePageLayout({
   description,
   action,
   children,
-  pagination,
+  className,
 }: TablePageLayoutProps) {
   return (
-    <div className="flex flex-1 flex-col gap-4 w-full max-w-full h-full">
-      {/* 1. Header Section */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+    <div className={cn("flex flex-1 flex-col gap-8 w-full max-w-full h-full min-w-0 p-4 lg:p-10", className)}>
+      {/* Header Section */}
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
         <div className="space-y-1.5">
-          <h2 className="text-2xl font-bold tracking-tight">{title}</h2>
+          <h1 className="text-3xl font-black tracking-tight text-foreground font-sans">{title}</h1>
           {description && (
-            <p className="text-sm text-muted-foreground">{description}</p>
+            <p className="text-sm font-medium text-muted-foreground font-sans">{description}</p>
           )}
         </div>
 
-        {/* Primary Action Button (Right Side) */}
-        {action && <div className="flex-shrink-0">{action}</div>}
+        {/* Primary Action Button */}
+        {action && (
+          <div className="flex-shrink-0">
+            {action}
+          </div>
+        )}
       </div>
 
-      <Separator />
-
-      {/* 3. The Table Content */}
-      {children}
-
-      {/* 4. Footer / Pagination */}
-      {pagination && (
-        <div className="flex items-center justify-end py-2">{pagination}</div>
-      )}
+      {/* The Table Content */}
+      <div className="min-w-0">
+        {children}
+      </div>
     </div>
   )
 }

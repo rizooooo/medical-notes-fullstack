@@ -90,7 +90,7 @@ export function HospiceEditDrawer({ hospice, open, onOpenChange }: HospiceEditDr
                             )}
                             placeholder="e.g. Hope Springs Hospice"
                         />
-                        <FormMessage>{field.state.meta.errors[0]?.toString()}</FormMessage>
+                        <FormMessage>{field.state.meta.errors[0] as any}</FormMessage>
                     </FormItem>
                 )}
             </form.Field>

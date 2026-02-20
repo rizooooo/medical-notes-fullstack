@@ -1,13 +1,15 @@
+"use client"
+
 import { useForm } from '@tanstack/react-form'
 import { z } from 'zod'
 import { Loader2 } from 'lucide-react'
-
 import { DialogWrapper } from '@/components/layout/DialogWrapper'
 import { FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { createNurseFn } from '@/server/nurse/nurse.functions'
 import { cn } from '@/lib/utils'
+import { EntityStatus } from '@/types/status'
 
 const nurseSchema = z.object({
     name: z.string().min(2, 'Nurse name must be at least 2 characters'),
@@ -33,7 +35,7 @@ export function AddNurseDialog({
         },
         onSubmit: async ({ value }) => {
             try {
-                await createNurseFn({ data: { name: value.name } })
+                await createNurseFn({ data: { name: value.name, status: EntityStatus.ACTIVE as any } })
                 form.reset()
                 onOpenChange(false)
                 if (onSuccess) {
@@ -51,7 +53,7 @@ export function AddNurseDialog({
                 type="button"
                 variant="ghost"
                 onClick={() => onOpenChange(false)}
-                className="flex-1 rounded-xl h-11 font-bold text-slate-500 hover:bg-slate-50 transition-all"
+                className="flex-1 rounded-xl h-11 font-bold text-slate-500 hover:bg-slate-50 transition-all font-sans"
             >
                 Cancel
             </Button>
@@ -61,7 +63,7 @@ export function AddNurseDialog({
                         type="button"
                         onClick={() => form.handleSubmit()}
                         disabled={!canSubmit || isSubmitting}
-                        className="flex-[1.5] rounded-xl h-11 font-bold bg-indigo-600 hover:bg-indigo-700 shadow-xl shadow-indigo-100 text-white transition-all active:scale-95 disabled:opacity-50 border-none"
+                        className="flex-[1.5] rounded-xl h-11 font-bold bg-indigo-600 hover:bg-indigo-700 shadow-xl shadow-indigo-100 text-white transition-all active:scale-95 disabled:opacity-50 border-none font-sans"
                     >
                         {isSubmitting && (
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -97,7 +99,7 @@ export function AddNurseDialog({
                                 field.state.meta.errors.length > 0 && 'border-rose-500 ring-rose-500/10'
                             )}
                         />
-                        <FormMessage>{field.state.meta.errors[0]?.toString()}</FormMessage>
+                        <FormMessage>{field.state.meta.errors[0] as any}</FormMessage>
                     </FormItem>
                 )}
             </form.Field>

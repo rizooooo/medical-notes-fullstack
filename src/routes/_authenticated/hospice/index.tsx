@@ -30,7 +30,7 @@ const hospiceSearchSchema = z.object({
 
 type HospiceSearch = z.infer<typeof hospiceSearchSchema>
 
-export const Route = createFileRoute('/hospice/')({
+export const Route = createFileRoute('/_authenticated/hospice/')({
   // 2. Validate URL Params
   validateSearch: (search: Record<string, unknown>): HospiceSearch =>
     hospiceSearchSchema.parse(search),
@@ -77,7 +77,8 @@ function HospicePage() {
 
   return (
     <TablePageLayout
-      title="Hospices"
+      title="Clinics"
+      description="Primary registry of clinical facilities and authorized hospice centers."
       action={
         <Button onClick={() => setShowAdd(true)}>
           <Plus /> Add hospice

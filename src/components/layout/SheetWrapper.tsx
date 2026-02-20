@@ -34,31 +34,29 @@ export function SheetWrapper({
             <SheetContent
                 side="right"
                 className={cn(
-                    "sm:max-w-md border-l-0 shadow-2xl p-0 overflow-hidden flex flex-col bg-white",
+                    "sm:max-w-sm p-0 flex flex-col border-l bg-white shadow-xl",
                     className
                 )}
             >
-                <div className="p-6 flex-1 overflow-y-auto">
-                    <SheetHeader className="space-y-1 pb-4">
-                        <SheetTitle className="text-2xl font-black tracking-tight text-slate-900">
+                <div className="flex-1 overflow-y-auto p-4">
+                    <SheetHeader className="space-y-1 mb-4">
+                        <SheetTitle className="text-base font-bold text-slate-900 tracking-tight">
                             {title}
                         </SheetTitle>
                         {description && (
-                            <SheetDescription className="text-slate-500 font-medium">
+                            <SheetDescription className="text-xs text-slate-500 font-medium">
                                 {description}
                             </SheetDescription>
                         )}
                     </SheetHeader>
 
-                    <div className="h-px bg-slate-100 my-6" />
-
-                    <div className="flex flex-col gap-8">
+                    <div className="space-y-4 mt-2">
                         {children}
                     </div>
                 </div>
 
                 {footer && (
-                    <div className="p-6 bg-slate-50/50 border-t border-slate-100">
+                    <div className="p-4 border-t bg-slate-50/30">
                         {footer}
                     </div>
                 )}

@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import type { IBaseEntity } from '@/types/common'
+import type { IBaseEntity, IAuditTrail } from '@/types/common'
 import {
     VisitType,
     ActionDone,
@@ -21,6 +21,14 @@ export interface IInvoiceVisit {
     timeOut: string
     noteStatus: NoteStatus
     rate: number
+    // Audit fields
+    createdBy?: string
+    createdWithName?: string
+    updatedBy?: string
+    updatedWithName?: string
+    createdAt?: Date
+    updatedAt?: Date
+    auditLog?: IAuditTrail[]
 }
 
 export interface IInvoicePatient {
@@ -42,6 +50,9 @@ export interface IInvoice extends IBaseEntity<string> {
     totalAmount: number
     status: InvoiceStatus
     patients: IInvoicePatient[]
+    auditLog?: IAuditTrail[]
+    createdAt: Date
+    updatedAt: Date
 }
 
 export const InvoiceVisitSchema = z.object({
@@ -57,6 +68,23 @@ export const InvoiceVisitSchema = z.object({
     timeOut: z.string(),
     noteStatus: z.enum(Object.values(NoteStatus) as [string, ...string[]]) as z.ZodType<NoteStatus>,
     rate: z.coerce.number(),
+    createdBy: z.string().optional(),
+    createdWithName: z.string().optional(),
+    updatedBy: z.string().optional(),
+    updatedWithName: z.string().optional(),
+    createdAt: z.coerce.date().optional(),
+    updatedAt: z.coerce.date().optional(),
+    auditLog: z.array(z.object({
+        timestamp: z.coerce.date(),
+        userId: z.string(),
+        userName: z.string(),
+        action: z.enum(['CREATE', 'UPDATE']),
+        changes: z.array(z.object({
+            field: z.string(),
+            oldValue: z.any(),
+            newValue: z.any(),
+        })).optional(),
+    })).optional(),
 })
 
 export const InvoicePatientSchema = z.object({
@@ -78,6 +106,19 @@ export const InvoiceSchema = z.object({
     totalAmount: z.coerce.number(),
     status: z.enum(Object.values(InvoiceStatus) as [string, ...string[]]) as z.ZodType<InvoiceStatus>,
     patients: z.array(InvoicePatientSchema).catch([]),
+    auditLog: z.array(z.object({
+        timestamp: z.coerce.date(),
+        userId: z.string(),
+        userName: z.string(),
+        action: z.enum(['CREATE', 'UPDATE']),
+        changes: z.array(z.object({
+            field: z.string(),
+            oldValue: z.any(),
+            newValue: z.any(),
+        })).optional(),
+    })).optional(),
+    createdAt: z.coerce.date().optional(),
+    updatedAt: z.coerce.date().optional(),
 })
 
 export const UpdateInvoiceSchema = InvoiceSchema.partial().extend({

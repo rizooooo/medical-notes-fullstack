@@ -135,7 +135,7 @@ export function PatientDialog({
                                         field.state.meta.errors.length > 0 && 'border-rose-500 ring-rose-500/10'
                                     )}
                                 />
-                                <FormMessage>{field.state.meta.errors[0]?.toString()}</FormMessage>
+                                <FormMessage>{field.state.meta.errors[0] as any}</FormMessage>
                             </FormItem>
                         )}
                     </form.Field>
@@ -201,7 +201,7 @@ export function PatientDialog({
                                         field.state.meta.errors.length > 0 && 'border-rose-500 ring-rose-500/10'
                                     )}
                                 />
-                                <FormMessage>{field.state.meta.errors[0]?.toString()}</FormMessage>
+                                <FormMessage>{field.state.meta.errors[0] as any}</FormMessage>
                             </FormItem>
                         )}
                     </form.Field>

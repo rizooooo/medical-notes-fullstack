@@ -24,8 +24,8 @@ export const getHospices = createServerFn({ method: 'GET' })
         .optional(),
     }),
   )
-  .handler(async ({ data }: { data: any }) => {
-    const result = await fetchHospices(data)
+  .handler(async ({ data: input }) => {
+    const result = await fetchHospices(input)
     return {
       ...result,
       data: result.data.map(h => ({
@@ -36,8 +36,8 @@ export const getHospices = createServerFn({ method: 'GET' })
   })
 
 export const getHospice = createServerFn({ method: 'GET' })
-  .inputValidator((id: string) => z.string().parse(id))
-  .handler(async ({ data: id }: { data: string }) => {
+  .inputValidator(z.string())
+  .handler(async ({ data: id }) => {
     const hospice = await getHospiceById(id)
     if (!hospice) return null
     return {
@@ -47,23 +47,31 @@ export const getHospice = createServerFn({ method: 'GET' })
   })
 
 export const createHospiceFn = createServerFn({ method: 'POST' })
-  .inputValidator((data: unknown) => HospiceSchema.parse(data))
-  .handler(async ({ data }: { data: any }) => {
-    const result = await insertHospice(data)
+  .inputValidator(HospiceSchema)
+  .handler(async ({ data: input }) => {
+    const result = await insertHospice(input)
     return { success: true, id: result.insertedId.toString() }
   })
 
 export const updateHospiceFn = createServerFn({ method: 'POST' })
-  .inputValidator((data: unknown) => UpdateHospiceSchema.parse(data))
-  .handler(async ({ data }: { data: any }) => {
-    const { id, ...rest } = data
+  .inputValidator(UpdateHospiceSchema)
+  .handler(async ({ data: input }) => {
+    const { id, ...rest } = input
     await updateHospice(id, rest)
     return { success: true }
   })
 
 export const deleteHospiceFn = createServerFn({ method: 'POST' })
-  .inputValidator((id: string) => z.string().parse(id))
-  .handler(async ({ data: id }: { data: string }) => {
+  .inputValidator(z.string())
+  .handler(async ({ data: id }) => {
     await deleteHospice(id)
     return { success: true }
+  })
+export const getAllHospicesFn = createServerFn({ method: 'GET' })
+  .handler(async () => {
+    const result = await fetchHospices({ page: 1, pageSize: 100 })
+    return result.data.map(h => ({
+      ...h,
+      _id: h._id.toString()
+    }))
   })

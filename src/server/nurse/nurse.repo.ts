@@ -61,15 +61,22 @@ export async function insertNurse(nurse: { name: string }) {
 
 export async function updateNurse(id: string, nurse: Partial<INurse>) {
     const db = await connectToDatabase()
-    const { _id, ...rest } = nurse
+    const { _id, auditLog, ...rest } = nurse as any
+
+    const updateQuery: any = {
+        $set: {
+            ...rest,
+            updatedAt: new Date(),
+        }
+    }
+
+    if (auditLog) {
+        updateQuery.$push = { auditLog }
+    }
+
     return await db.collection('nurse').updateOne(
         { _id: new ObjectId(id) },
-        {
-            $set: {
-                ...rest,
-                updatedAt: new Date(),
-            },
-        },
+        updateQuery
     )
 }
 
@@ -81,4 +88,10 @@ export async function deleteNurse(id: string) {
 export async function getNurseById(id: string) {
     const db = await connectToDatabase()
     return await db.collection<INurseDocument>('nurse').findOne({ _id: new ObjectId(id) })
+}
+export async function getNursesByHospiceCredential(hospiceId: string) {
+    const db = await connectToDatabase()
+    return await db.collection<INurseDocument>('nurse').find({
+        'credentials.hospiceId': hospiceId
+    }).toArray()
 }

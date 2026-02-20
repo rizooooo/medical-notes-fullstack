@@ -9,159 +9,339 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as NurseIndexRouteImport } from './routes/nurse/index'
-import { Route as InvoiceIndexRouteImport } from './routes/invoice/index'
-import { Route as HospiceIndexRouteImport } from './routes/hospice/index'
-import { Route as NurseNurseIdRouteImport } from './routes/nurse/$nurseId'
-import { Route as HospiceHospiceIdRouteImport } from './routes/hospice/$hospiceId'
+import { Route as TestRegisterRouteImport } from './routes/test-register'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
+import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
+import { Route as AuthenticatedCalendarRouteImport } from './routes/_authenticated/calendar'
+import { Route as AuthenticatedNurseIndexRouteImport } from './routes/_authenticated/nurse/index'
+import { Route as AuthenticatedInvoiceIndexRouteImport } from './routes/_authenticated/invoice/index'
+import { Route as AuthenticatedHospiceIndexRouteImport } from './routes/_authenticated/hospice/index'
+import { Route as AuthenticatedEmployeeIndexRouteImport } from './routes/_authenticated/employee/index'
+import { Route as AuthenticatedNurseNurseIdRouteImport } from './routes/_authenticated/nurse/$nurseId'
+import { Route as AuthenticatedInvoiceInvoiceIdRouteImport } from './routes/_authenticated/invoice/$invoiceId'
+import { Route as AuthenticatedHospiceHospiceIdRouteImport } from './routes/_authenticated/hospice/$hospiceId'
+import { Route as AuthenticatedEmployeeEmployeeIdRouteImport } from './routes/_authenticated/employee/$employeeId'
 
-const IndexRoute = IndexRouteImport.update({
+const TestRegisterRoute = TestRegisterRouteImport.update({
+  id: '/test-register',
+  path: '/test-register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
-const NurseIndexRoute = NurseIndexRouteImport.update({
+const AuthenticatedCalendarRoute = AuthenticatedCalendarRouteImport.update({
+  id: '/calendar',
+  path: '/calendar',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedNurseIndexRoute = AuthenticatedNurseIndexRouteImport.update({
   id: '/nurse/',
   path: '/nurse/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
-const InvoiceIndexRoute = InvoiceIndexRouteImport.update({
-  id: '/invoice/',
-  path: '/invoice/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HospiceIndexRoute = HospiceIndexRouteImport.update({
-  id: '/hospice/',
-  path: '/hospice/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const NurseNurseIdRoute = NurseNurseIdRouteImport.update({
-  id: '/nurse/$nurseId',
-  path: '/nurse/$nurseId',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HospiceHospiceIdRoute = HospiceHospiceIdRouteImport.update({
-  id: '/hospice/$hospiceId',
-  path: '/hospice/$hospiceId',
-  getParentRoute: () => rootRouteImport,
-} as any)
+const AuthenticatedInvoiceIndexRoute =
+  AuthenticatedInvoiceIndexRouteImport.update({
+    id: '/invoice/',
+    path: '/invoice/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedHospiceIndexRoute =
+  AuthenticatedHospiceIndexRouteImport.update({
+    id: '/hospice/',
+    path: '/hospice/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedEmployeeIndexRoute =
+  AuthenticatedEmployeeIndexRouteImport.update({
+    id: '/employee/',
+    path: '/employee/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedNurseNurseIdRoute =
+  AuthenticatedNurseNurseIdRouteImport.update({
+    id: '/nurse/$nurseId',
+    path: '/nurse/$nurseId',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedInvoiceInvoiceIdRoute =
+  AuthenticatedInvoiceInvoiceIdRouteImport.update({
+    id: '/invoice/$invoiceId',
+    path: '/invoice/$invoiceId',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedHospiceHospiceIdRoute =
+  AuthenticatedHospiceHospiceIdRouteImport.update({
+    id: '/hospice/$hospiceId',
+    path: '/hospice/$hospiceId',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedEmployeeEmployeeIdRoute =
+  AuthenticatedEmployeeEmployeeIdRouteImport.update({
+    id: '/employee/$employeeId',
+    path: '/employee/$employeeId',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/hospice/$hospiceId': typeof HospiceHospiceIdRoute
-  '/nurse/$nurseId': typeof NurseNurseIdRoute
-  '/hospice/': typeof HospiceIndexRoute
-  '/invoice/': typeof InvoiceIndexRoute
-  '/nurse/': typeof NurseIndexRoute
+  '/': typeof AuthenticatedIndexRoute
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
+  '/test-register': typeof TestRegisterRoute
+  '/calendar': typeof AuthenticatedCalendarRoute
+  '/employee/$employeeId': typeof AuthenticatedEmployeeEmployeeIdRoute
+  '/hospice/$hospiceId': typeof AuthenticatedHospiceHospiceIdRoute
+  '/invoice/$invoiceId': typeof AuthenticatedInvoiceInvoiceIdRoute
+  '/nurse/$nurseId': typeof AuthenticatedNurseNurseIdRoute
+  '/employee/': typeof AuthenticatedEmployeeIndexRoute
+  '/hospice/': typeof AuthenticatedHospiceIndexRoute
+  '/invoice/': typeof AuthenticatedInvoiceIndexRoute
+  '/nurse/': typeof AuthenticatedNurseIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/hospice/$hospiceId': typeof HospiceHospiceIdRoute
-  '/nurse/$nurseId': typeof NurseNurseIdRoute
-  '/hospice': typeof HospiceIndexRoute
-  '/invoice': typeof InvoiceIndexRoute
-  '/nurse': typeof NurseIndexRoute
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
+  '/test-register': typeof TestRegisterRoute
+  '/calendar': typeof AuthenticatedCalendarRoute
+  '/': typeof AuthenticatedIndexRoute
+  '/employee/$employeeId': typeof AuthenticatedEmployeeEmployeeIdRoute
+  '/hospice/$hospiceId': typeof AuthenticatedHospiceHospiceIdRoute
+  '/invoice/$invoiceId': typeof AuthenticatedInvoiceInvoiceIdRoute
+  '/nurse/$nurseId': typeof AuthenticatedNurseNurseIdRoute
+  '/employee': typeof AuthenticatedEmployeeIndexRoute
+  '/hospice': typeof AuthenticatedHospiceIndexRoute
+  '/invoice': typeof AuthenticatedInvoiceIndexRoute
+  '/nurse': typeof AuthenticatedNurseIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/hospice/$hospiceId': typeof HospiceHospiceIdRoute
-  '/nurse/$nurseId': typeof NurseNurseIdRoute
-  '/hospice/': typeof HospiceIndexRoute
-  '/invoice/': typeof InvoiceIndexRoute
-  '/nurse/': typeof NurseIndexRoute
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
+  '/test-register': typeof TestRegisterRoute
+  '/_authenticated/calendar': typeof AuthenticatedCalendarRoute
+  '/_authenticated/': typeof AuthenticatedIndexRoute
+  '/_authenticated/employee/$employeeId': typeof AuthenticatedEmployeeEmployeeIdRoute
+  '/_authenticated/hospice/$hospiceId': typeof AuthenticatedHospiceHospiceIdRoute
+  '/_authenticated/invoice/$invoiceId': typeof AuthenticatedInvoiceInvoiceIdRoute
+  '/_authenticated/nurse/$nurseId': typeof AuthenticatedNurseNurseIdRoute
+  '/_authenticated/employee/': typeof AuthenticatedEmployeeIndexRoute
+  '/_authenticated/hospice/': typeof AuthenticatedHospiceIndexRoute
+  '/_authenticated/invoice/': typeof AuthenticatedInvoiceIndexRoute
+  '/_authenticated/nurse/': typeof AuthenticatedNurseIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/login'
+    | '/register'
+    | '/test-register'
+    | '/calendar'
+    | '/employee/$employeeId'
     | '/hospice/$hospiceId'
+    | '/invoice/$invoiceId'
     | '/nurse/$nurseId'
+    | '/employee/'
     | '/hospice/'
     | '/invoice/'
     | '/nurse/'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/login'
+    | '/register'
+    | '/test-register'
+    | '/calendar'
     | '/'
+    | '/employee/$employeeId'
     | '/hospice/$hospiceId'
+    | '/invoice/$invoiceId'
     | '/nurse/$nurseId'
+    | '/employee'
     | '/hospice'
     | '/invoice'
     | '/nurse'
   id:
     | '__root__'
-    | '/'
-    | '/hospice/$hospiceId'
-    | '/nurse/$nurseId'
-    | '/hospice/'
-    | '/invoice/'
-    | '/nurse/'
+    | '/_authenticated'
+    | '/login'
+    | '/register'
+    | '/test-register'
+    | '/_authenticated/calendar'
+    | '/_authenticated/'
+    | '/_authenticated/employee/$employeeId'
+    | '/_authenticated/hospice/$hospiceId'
+    | '/_authenticated/invoice/$invoiceId'
+    | '/_authenticated/nurse/$nurseId'
+    | '/_authenticated/employee/'
+    | '/_authenticated/hospice/'
+    | '/_authenticated/invoice/'
+    | '/_authenticated/nurse/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  HospiceHospiceIdRoute: typeof HospiceHospiceIdRoute
-  NurseNurseIdRoute: typeof NurseNurseIdRoute
-  HospiceIndexRoute: typeof HospiceIndexRoute
-  InvoiceIndexRoute: typeof InvoiceIndexRoute
-  NurseIndexRoute: typeof NurseIndexRoute
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
+  LoginRoute: typeof LoginRoute
+  RegisterRoute: typeof RegisterRoute
+  TestRegisterRoute: typeof TestRegisterRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/test-register': {
+      id: '/test-register'
+      path: '/test-register'
+      fullPath: '/test-register'
+      preLoaderRoute: typeof TestRegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/': {
+      id: '/_authenticated/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
-    '/nurse/': {
-      id: '/nurse/'
+    '/_authenticated/calendar': {
+      id: '/_authenticated/calendar'
+      path: '/calendar'
+      fullPath: '/calendar'
+      preLoaderRoute: typeof AuthenticatedCalendarRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/nurse/': {
+      id: '/_authenticated/nurse/'
       path: '/nurse'
       fullPath: '/nurse/'
-      preLoaderRoute: typeof NurseIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedNurseIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
-    '/invoice/': {
-      id: '/invoice/'
+    '/_authenticated/invoice/': {
+      id: '/_authenticated/invoice/'
       path: '/invoice'
       fullPath: '/invoice/'
-      preLoaderRoute: typeof InvoiceIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedInvoiceIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
-    '/hospice/': {
-      id: '/hospice/'
+    '/_authenticated/hospice/': {
+      id: '/_authenticated/hospice/'
       path: '/hospice'
       fullPath: '/hospice/'
-      preLoaderRoute: typeof HospiceIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedHospiceIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
-    '/nurse/$nurseId': {
-      id: '/nurse/$nurseId'
+    '/_authenticated/employee/': {
+      id: '/_authenticated/employee/'
+      path: '/employee'
+      fullPath: '/employee/'
+      preLoaderRoute: typeof AuthenticatedEmployeeIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/nurse/$nurseId': {
+      id: '/_authenticated/nurse/$nurseId'
       path: '/nurse/$nurseId'
       fullPath: '/nurse/$nurseId'
-      preLoaderRoute: typeof NurseNurseIdRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedNurseNurseIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
-    '/hospice/$hospiceId': {
-      id: '/hospice/$hospiceId'
+    '/_authenticated/invoice/$invoiceId': {
+      id: '/_authenticated/invoice/$invoiceId'
+      path: '/invoice/$invoiceId'
+      fullPath: '/invoice/$invoiceId'
+      preLoaderRoute: typeof AuthenticatedInvoiceInvoiceIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/hospice/$hospiceId': {
+      id: '/_authenticated/hospice/$hospiceId'
       path: '/hospice/$hospiceId'
       fullPath: '/hospice/$hospiceId'
-      preLoaderRoute: typeof HospiceHospiceIdRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedHospiceHospiceIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/employee/$employeeId': {
+      id: '/_authenticated/employee/$employeeId'
+      path: '/employee/$employeeId'
+      fullPath: '/employee/$employeeId'
+      preLoaderRoute: typeof AuthenticatedEmployeeEmployeeIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
   }
 }
 
+interface AuthenticatedRouteChildren {
+  AuthenticatedCalendarRoute: typeof AuthenticatedCalendarRoute
+  AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+  AuthenticatedEmployeeEmployeeIdRoute: typeof AuthenticatedEmployeeEmployeeIdRoute
+  AuthenticatedHospiceHospiceIdRoute: typeof AuthenticatedHospiceHospiceIdRoute
+  AuthenticatedInvoiceInvoiceIdRoute: typeof AuthenticatedInvoiceInvoiceIdRoute
+  AuthenticatedNurseNurseIdRoute: typeof AuthenticatedNurseNurseIdRoute
+  AuthenticatedEmployeeIndexRoute: typeof AuthenticatedEmployeeIndexRoute
+  AuthenticatedHospiceIndexRoute: typeof AuthenticatedHospiceIndexRoute
+  AuthenticatedInvoiceIndexRoute: typeof AuthenticatedInvoiceIndexRoute
+  AuthenticatedNurseIndexRoute: typeof AuthenticatedNurseIndexRoute
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedCalendarRoute: AuthenticatedCalendarRoute,
+  AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+  AuthenticatedEmployeeEmployeeIdRoute: AuthenticatedEmployeeEmployeeIdRoute,
+  AuthenticatedHospiceHospiceIdRoute: AuthenticatedHospiceHospiceIdRoute,
+  AuthenticatedInvoiceInvoiceIdRoute: AuthenticatedInvoiceInvoiceIdRoute,
+  AuthenticatedNurseNurseIdRoute: AuthenticatedNurseNurseIdRoute,
+  AuthenticatedEmployeeIndexRoute: AuthenticatedEmployeeIndexRoute,
+  AuthenticatedHospiceIndexRoute: AuthenticatedHospiceIndexRoute,
+  AuthenticatedInvoiceIndexRoute: AuthenticatedInvoiceIndexRoute,
+  AuthenticatedNurseIndexRoute: AuthenticatedNurseIndexRoute,
+}
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  HospiceHospiceIdRoute: HospiceHospiceIdRoute,
-  NurseNurseIdRoute: NurseNurseIdRoute,
-  HospiceIndexRoute: HospiceIndexRoute,
-  InvoiceIndexRoute: InvoiceIndexRoute,
-  NurseIndexRoute: NurseIndexRoute,
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
+  LoginRoute: LoginRoute,
+  RegisterRoute: RegisterRoute,
+  TestRegisterRoute: TestRegisterRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

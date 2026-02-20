@@ -3,17 +3,16 @@ import { z } from 'zod'
 import { Plus } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { TablePageLayout } from '@/layout/table-page-layout'
-import { getNurses } from '@/server/nurse/nurse.functions'
-import { DataTable } from '@/components/table/nurse-table/data-table'
-import { getColumns } from '@/components/table/nurse-table/columns'
+import { getInvoices } from '@/server/invoice/invoice.functions'
 import { Button } from '@/components/ui/button'
-import { AddNurseDialog } from '@/components/modals/AddNurseModal'
-import { EditNurseDialog } from '@/components/modals/EditNurseModal'
-import { DeleteNurseDialog } from '@/components/modals/DeleteNurseModal'
 import { TablePageSkeleton } from '@/components/skeletons/TableSkeleton'
-import type { INurse } from '@/server/nurse/nurse.schema'
+import { AddInvoiceModal } from '@/components/modals/AddInvoiceModal'
+import { DeleteInvoiceModal } from '@/components/modals/DeleteInvoiceModal'
+import { DataTable } from '@/components/table/invoice-table/data-table'
+import { getColumns } from '@/components/table/invoice-table/columns'
+import type { IInvoice } from '@/server/invoice/invoice.schema'
 
-const nurseSearchSchema = z.object({
+const invoiceSearchSchema = z.object({
     page: z.number().catch(1),
     pageSize: z.number().catch(10),
     sorting: z
@@ -27,11 +26,11 @@ const nurseSearchSchema = z.object({
         .catch([]),
 })
 
-type NurseSearch = z.infer<typeof nurseSearchSchema>
+type InvoiceSearch = z.infer<typeof invoiceSearchSchema>
 
-export const Route = createFileRoute('/nurse/')({
-    validateSearch: (search: Record<string, unknown>): NurseSearch =>
-        nurseSearchSchema.parse(search),
+export const Route = createFileRoute('/_authenticated/invoice/')({
+    validateSearch: (search: Record<string, unknown>): InvoiceSearch =>
+        invoiceSearchSchema.parse(search),
 
     loaderDeps: ({ search }) => ({
         page: search.page,
@@ -40,8 +39,8 @@ export const Route = createFileRoute('/nurse/')({
     }),
     pendingComponent: TablePageSkeleton,
 
-    loader: async ({ deps }: { deps: NurseSearch }) =>
-        await getNurses({
+    loader: async ({ deps }: { deps: InvoiceSearch }) =>
+        await getInvoices({
             data: {
                 page: deps.page,
                 pageSize: deps.pageSize,
@@ -49,34 +48,37 @@ export const Route = createFileRoute('/nurse/')({
             },
         }),
 
-    component: NursePage,
+    component: InvoicePage,
 })
 
-function NursePage() {
+function InvoicePage() {
     const [showAdd, setShowAdd] = useState(false)
-    const [editingNurse, setEditingNurse] = useState<INurse | null>(null)
-    const [deletingNurse, setDeletingNurse] = useState<INurse | null>(null)
+    const [deletingInvoice, setDeletingInvoice] = useState<IInvoice | null>(null)
 
     const { data, metadata } = Route.useLoaderData()
+    const router = useRouter()
     const navigate = Route.useNavigate()
     const search = Route.useSearch()
-    const router = useRouter()
 
     const columns = useMemo(
         () =>
             getColumns({
-                onEdit: (nurse: INurse) => setEditingNurse(nurse),
-                onDelete: (nurse: INurse) => setDeletingNurse(nurse),
+                onEdit: () => { /* Logic hidden */ },
+                onDelete: (invoice: IInvoice) => setDeletingInvoice(invoice),
+                onView: (invoice: IInvoice) => {
+                    navigate({ to: '/invoice/$invoiceId', params: { invoiceId: invoice._id } })
+                },
             }),
-        [],
+        [navigate],
     )
 
     return (
         <TablePageLayout
-            title="Nurses"
+            title="Invoices"
+            description="Manage billing and financial records for hospice facilities."
             action={
-                <Button onClick={() => setShowAdd(true)}>
-                    <Plus /> Add nurse
+                <Button onClick={() => setShowAdd(true)} size="sm" className="h-8 rounded-md font-bold text-xs">
+                    <Plus className="mr-1.5 h-3.5 w-3.5" /> Generate Invoice
                 </Button>
             }
         >
@@ -99,7 +101,7 @@ function NursePage() {
                             : updater
 
                     navigate({
-                        search: (old: NurseSearch) => ({
+                        search: (old: InvoiceSearch) => ({
                             ...old,
                             page: (nextState?.pageIndex ?? 0) + 1,
                             pageSize: nextState?.pageSize ?? 10,
@@ -114,7 +116,7 @@ function NursePage() {
                             : updater
 
                     navigate({
-                        search: (old: NurseSearch) => ({
+                        search: (old: InvoiceSearch) => ({
                             ...old,
                             sorting: nextState,
                             page: 1,
@@ -122,26 +124,18 @@ function NursePage() {
                     })
                 }}
             />
-            {showAdd && (
-                <AddNurseDialog
-                    onOpenChange={(open: boolean) => setShowAdd(open)}
-                    open
-                    onSuccess={() => router.invalidate()}
-                />
-            )}
-            {editingNurse && (
-                <EditNurseDialog
-                    nurse={editingNurse}
-                    open={!!editingNurse}
-                    onOpenChange={(open: boolean) => !open && setEditingNurse(null)}
-                    onSuccess={() => router.invalidate()}
-                />
-            )}
-            {deletingNurse && (
-                <DeleteNurseDialog
-                    nurse={deletingNurse}
-                    open={!!deletingNurse}
-                    onOpenChange={(open: boolean) => !open && setDeletingNurse(null)}
+
+            <AddInvoiceModal
+                open={showAdd}
+                onOpenChange={setShowAdd}
+                onSuccess={() => router.invalidate()}
+            />
+
+            {deletingInvoice && (
+                <DeleteInvoiceModal
+                    invoice={deletingInvoice}
+                    open={!!deletingInvoice}
+                    onOpenChange={(open) => !open && setDeletingInvoice(null)}
                     onSuccess={() => router.invalidate()}
                 />
             )}

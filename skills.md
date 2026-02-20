@@ -30,3 +30,9 @@
   - Show loading states (e.g., using a `Loader2` icon) on the submit button while the form is submitting.
   - Disable the submit button if the form has validation errors or is currently submitting.
   - Reset the form after successful submission if necessary.
+## Design Aesthetics
+- **Flat UI**: Avoid heavy shadows, large border-radii (use `rounded-md` or `rounded-lg` max), and complex gradients.
+- **Simplification**: Use a clean, grayscale-leaning palette with a single primary accent (e.g., Indigo).
+- **Density**: Optimize for 13-inch Macbook screens at 100% zoom. This means smaller text (`text-xs`, `text-[10px]`), reduced padding (`p-2`, `p-3` instead of `p-6`), and smaller component heights (`h-8` or `h-9` for buttons and inputs).
+- **Standard Shadcn**: Favor the default look and feel of Shadcn UI components.
+- **Print Friendly**: Always consider a print-friendly layout by hiding navigation and using high-contrast text.

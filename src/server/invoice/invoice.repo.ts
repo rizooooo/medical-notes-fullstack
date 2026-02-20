@@ -1,3 +1,4 @@
+import { InvoiceStatus } from '@/types/invoice'
 import { ObjectId } from 'mongodb'
 import { connectToDatabase } from '@/lib/db'
 import type { IInvoice } from './invoice.schema'
@@ -66,4 +67,97 @@ export async function updateInvoice(id: string, invoice: Partial<IInvoice>) {
 export async function deleteInvoice(id: string) {
     const db = await connectToDatabase()
     return await db.collection('invoice').deleteOne({ _id: new ObjectId(id) })
+}
+
+export async function addPatientToInvoice(invoiceId: string, patient: any) {
+    const db = await connectToDatabase()
+    return await db.collection('invoice').updateOne(
+        { _id: new ObjectId(invoiceId) },
+        {
+            $push: { patients: patient } as any,
+            $set: { updatedAt: new Date() }
+        }
+    )
+}
+
+export async function removePatientFromInvoice(invoiceId: string, patientId: string) {
+    const db = await connectToDatabase()
+    return await db.collection('invoice').updateOne(
+        { _id: new ObjectId(invoiceId) },
+        {
+            $pull: { patients: { patientId } } as any,
+            $set: { updatedAt: new Date() }
+        }
+    )
+}
+
+export async function updatePatientInInvoice(invoiceId: string, patientId: string, patientData: any) {
+    const db = await connectToDatabase()
+    const updateObj: any = {}
+    for (const key in patientData) {
+        updateObj[`patients.$.${key}`] = patientData[key]
+    }
+    return await db.collection('invoice').updateOne(
+        { _id: new ObjectId(invoiceId), 'patients.patientId': patientId },
+        {
+            $set: { ...updateObj, updatedAt: new Date() }
+        }
+    )
+}
+
+export async function addVisitToPatient(invoiceId: string, patientId: string, visit: any) {
+    const db = await connectToDatabase()
+    return await db.collection('invoice').updateOne(
+        { _id: new ObjectId(invoiceId), 'patients.patientId': patientId },
+        {
+            $push: { 'patients.$.visits': visit } as any,
+            $set: { updatedAt: new Date() }
+        }
+    )
+}
+
+export async function updateVisitInPatient(invoiceId: string, patientId: string, visitId: string, visitData: any) {
+    const db = await connectToDatabase()
+    const updateObj: any = {}
+    for (const key in visitData) {
+        updateObj[`patients.$[p].visits.$[v].${key}`] = visitData[key]
+    }
+    return await db.collection('invoice').updateOne(
+        { _id: new ObjectId(invoiceId) },
+        {
+            $set: { ...updateObj, updatedAt: new Date() }
+        },
+        {
+            arrayFilters: [
+                { 'p.patientId': patientId },
+                { 'v._id': visitId }
+            ]
+        } as any
+    )
+}
+
+export async function removeVisitFromPatient(invoiceId: string, patientId: string, visitId: string) {
+    const db = await connectToDatabase()
+    return await db.collection('invoice').updateOne(
+        { _id: new ObjectId(invoiceId), 'patients.patientId': patientId },
+        {
+            $pull: { 'patients.$.visits': { _id: visitId } } as any,
+            $set: { updatedAt: new Date() }
+        }
+    )
+}
+export async function fetchActivePatientIds() {
+    const db = await connectToDatabase()
+    const activeInvoices = await db.collection<IInvoice>('invoice').find({
+        status: { $nin: [InvoiceStatus.Paid, InvoiceStatus.Void] }
+    }).toArray()
+
+    const patientIds = new Set<string>()
+    activeInvoices.forEach(inv => {
+        inv.patients?.forEach(p => {
+            patientIds.add(p.patientId)
+        })
+    })
+
+    return Array.from(patientIds)
 }

@@ -9,6 +9,7 @@ import { createHospiceFn } from '@/server/hospice/hospice.functions'
 import { cn } from '@/lib/utils'
 import { DialogWrapper } from '@/components/layout/DialogWrapper'
 import { FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { EntityStatus } from '@/types/status'
 
 const hospiceSchema = z.object({
   name: z.string().min(2, 'Hospice name must be at least 2 characters'),
@@ -34,7 +35,7 @@ export function AddHospiceDialog({
     },
     onSubmit: async ({ value }) => {
       try {
-        await createHospiceFn({ data: { name: value.name } })
+        await createHospiceFn({ data: { name: value.name, status: EntityStatus.ACTIVE as any } })
         form.reset()
         onOpenChange(false)
         if (onSuccess) {
@@ -98,7 +99,7 @@ export function AddHospiceDialog({
                 field.state.meta.errors.length > 0 && 'border-rose-500 ring-rose-500/10'
               )}
             />
-            <FormMessage>{field.state.meta.errors[0]?.toString()}</FormMessage>
+            <FormMessage>{field.state.meta.errors[0] as any}</FormMessage>
           </FormItem>
         )}
       </form.Field>

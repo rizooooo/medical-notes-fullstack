@@ -32,28 +32,26 @@ export function DialogWrapper({
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className={cn(
-                "sm:max-w-[480px] border-none shadow-2xl rounded-3xl overflow-hidden p-0 bg-white",
+                "sm:max-w-[420px] p-0 rounded-lg overflow-hidden border shadow-lg bg-white",
                 className
             )}>
-                <div className="bg-slate-900 p-6 text-white relative">
-                    <DialogHeader>
-                        <DialogTitle className="text-xl font-black tracking-tight text-white leading-tight">
-                            {title}
-                        </DialogTitle>
-                        {description && (
-                            <DialogDescription className="text-slate-400 text-sm font-medium">
-                                {description}
-                            </DialogDescription>
-                        )}
-                    </DialogHeader>
-                </div>
+                <DialogHeader className="p-4 border-b bg-slate-50/50">
+                    <DialogTitle className="text-sm font-bold text-slate-900 tracking-tight">
+                        {title}
+                    </DialogTitle>
+                    {description && (
+                        <DialogDescription className="text-[11px] text-slate-500 font-medium">
+                            {description}
+                        </DialogDescription>
+                    )}
+                </DialogHeader>
 
-                <div className="p-6">
+                <div className="p-4">
                     {children}
                 </div>
 
                 {footer && (
-                    <div className="px-6 pb-6 pt-2 border-t border-slate-50">
+                    <div className="px-4 pb-4 pt-4 border-t bg-slate-50/30">
                         {footer}
                     </div>
                 )}

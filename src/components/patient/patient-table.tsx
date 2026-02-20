@@ -17,11 +17,12 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
-import { MoreVertical, Pencil, Trash2 } from 'lucide-react'
+import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { EntityStatus } from '@/types/status'
 import { deletePatientFn } from '@/server/patient/patient.functions'
 import { useRouter } from '@tanstack/react-router'
+import { toast } from 'sonner'
 
 interface PatientTableProps {
     patients: any[]
@@ -35,83 +36,87 @@ export function PatientTable({ patients, onEdit }: PatientTableProps) {
         if (confirm('Are you sure you want to remove this patient?')) {
             try {
                 await deletePatientFn({ data: id })
+                toast.success('Patient record removed')
                 router.invalidate()
             } catch (error) {
-                console.error('Failed to delete patient:', error)
+                toast.error('Failed to remove record')
             }
         }
     }
 
     if (patients.length === 0) {
         return (
-            <div className="text-center py-20 text-muted-foreground bg-white rounded-xl border border-slate-100 shadow-sm">
-                <p>No patients registered yet.</p>
+            <div className="text-center py-12 text-slate-400 bg-white rounded-md border shadow-none">
+                <p className="text-[11px] font-bold uppercase tracking-widest leading-none">No patient records found</p>
             </div>
         )
     }
 
     return (
-        <div className="bg-white rounded-xl border border-slate-200/60 shadow-sm overflow-hidden">
+        <div className="bg-white rounded-md border shadow-none overflow-hidden">
             <Table>
                 <TableHeader className="bg-slate-50/50">
                     <TableRow className="hover:bg-transparent border-slate-100">
-                        <TableHead className="w-[300px] font-bold text-slate-700">Patient Name</TableHead>
-                        <TableHead className="font-bold text-slate-700">Age</TableHead>
-                        <TableHead className="w-[250px] font-bold text-slate-700">Diagnosis</TableHead>
-                        <TableHead className="font-bold text-slate-700">Admission Date</TableHead>
-                        <TableHead className="font-bold text-slate-700">Status</TableHead>
-                        <TableHead className="text-right font-bold text-slate-700 pr-6">Actions</TableHead>
+                        <TableHead className="text-[10px] font-bold uppercase tracking-wider text-slate-500 h-9 px-4">Registry Identification</TableHead>
+                        <TableHead className="text-[10px] font-bold uppercase tracking-wider text-slate-500 h-9 px-4">Clinical Data (Age/DX)</TableHead>
+                        <TableHead className="text-[10px] font-bold uppercase tracking-wider text-slate-500 h-9 px-4">Admission</TableHead>
+                        <TableHead className="text-[10px] font-bold uppercase tracking-wider text-slate-500 h-9 px-4">Status</TableHead>
+                        <TableHead className="text-right text-[10px] font-bold uppercase tracking-wider text-slate-500 h-9 px-4"></TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     {patients.map((patient) => (
                         <TableRow key={patient._id} className="hover:bg-slate-50/30 transition-colors border-slate-100 group">
-                            <TableCell className="font-semibold text-slate-900 py-4">
-                                <div className="flex items-center gap-3">
-                                    <Avatar className="w-8 h-8 rounded-lg">
-                                        <AvatarFallback className="bg-slate-100 text-slate-600 text-[10px] font-bold uppercase">
+                            <TableCell className="py-2.5 px-4">
+                                <div className="flex items-center gap-2.5">
+                                    <Avatar className="w-7 h-7 rounded-sm border">
+                                        <AvatarFallback className="bg-slate-50 text-slate-500 text-[9px] font-bold uppercase rounded-sm">
                                             {patient.name.split(' ').map((n: string) => n[0]).join('')}
                                         </AvatarFallback>
                                     </Avatar>
-                                    {patient.name}
+                                    <span className="text-xs font-bold text-slate-900">{patient.name}</span>
                                 </div>
                             </TableCell>
-                            <TableCell className="text-slate-600">{patient.age}</TableCell>
-                            <TableCell className="text-slate-600 font-medium italic truncate max-w-[200px]">{patient.diagnosis}</TableCell>
-                            <TableCell className="text-slate-500">
+                            <TableCell className="py-2.5 px-4">
+                                <div className="flex flex-col gap-0.5">
+                                    <span className="text-xs font-bold text-slate-700">{patient.age}Y</span>
+                                    <span className="text-[10px] font-medium text-slate-500 italic truncate max-w-[180px]">{patient.diagnosis}</span>
+                                </div>
+                            </TableCell>
+                            <TableCell className="py-2.5 px-4 text-[11px] font-medium text-slate-500">
                                 {new Date(patient.createdAt).toLocaleDateString('en-US', {
                                     month: 'short',
                                     day: 'numeric',
                                     year: 'numeric',
                                 })}
                             </TableCell>
-                            <TableCell>
+                            <TableCell className="py-2.5 px-4">
                                 <Badge
                                     variant="outline"
                                     className={cn(
-                                        "rounded-full px-3 py-0.5 font-semibold text-[11px]",
-                                        patient.status === EntityStatus.ACTIVE ? "bg-emerald-50 text-emerald-700 border-emerald-100" : "bg-slate-100 text-slate-600 border-slate-200"
+                                        "rounded-sm px-1.5 h-4.5 font-bold text-[9px] uppercase",
+                                        patient.status === EntityStatus.ACTIVE ? "bg-indigo-50 text-indigo-700 border-indigo-100" : "bg-slate-50 text-slate-600 border-slate-200"
                                     )}
                                 >
                                     {patient.status}
                                 </Badge>
                             </TableCell>
-                            <TableCell className="text-right pr-6">
+                            <TableCell className="py-2.5 px-4 text-right">
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
-                                        <Button variant="ghost" className="h-8 w-8 p-0 rounded-full hover:bg-slate-100">
-                                            <MoreVertical className="h-4 w-4 text-slate-500" />
+                                        <Button variant="ghost" className="h-6 w-6 p-0 rounded-md hover:bg-slate-100 transition-colors">
+                                            <MoreHorizontal className="h-3.5 w-3.5 text-slate-400 group-hover:text-slate-900" />
                                         </Button>
                                     </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="end" className="w-40 rounded-xl shadow-xl border-slate-100">
-                                        <DropdownMenuItem onClick={() => onEdit(patient)} className="rounded-lg gap-2 cursor-pointer py-2 font-medium">
-                                            <Pencil className="w-4 h-4 text-slate-500" /> Edit Patient
+                                    <DropdownMenuContent align="end" className="w-36 rounded-md shadow-lg border-slate-200 p-1">
+                                        <DropdownMenuItem onClick={() => onEdit(patient)} className="text-[10px] font-bold uppercase tracking-wider gap-2 cursor-pointer rounded-sm">
+                                            <Pencil className="w-3 h-3 text-slate-400" /> Modify File
                                         </DropdownMenuItem>
                                         <DropdownMenuItem
                                             onClick={() => handleDelete(patient._id)}
-                                            className="text-rose-600 focus:text-rose-600 rounded-lg gap-2 cursor-pointer py-2 font-medium"
+                                            className="text-rose-600 focus:text-rose-600 text-[10px] font-bold uppercase tracking-wider gap-2 cursor-pointer rounded-sm"
                                         >
-                                            <Trash2 className="w-4 h-4" /> Remove
+                                            <Trash2 className="w-3 h-3 text-rose-400" /> Remove record
                                         </DropdownMenuItem>
                                     </DropdownMenuContent>
                                 </DropdownMenu>
